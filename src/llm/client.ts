@@ -33,10 +33,11 @@ export async function parseReminderFull(
       config: {
         systemInstruction: PARSE_REMINDER_PROMPT,
         temperature: 0,
-        maxOutputTokens: 256,
+        maxOutputTokens: 1024,
       },
-    })
-
+    });
+    console.log(response);
+    Bun.write('output.json', JSON.stringify(response, null, 2))
     const raw = response.text?.trim() ?? ''
     if (raw === 'null') return null
 
@@ -49,3 +50,7 @@ export async function parseReminderFull(
     return null
   }
 }
+
+
+let d = await parseReminderFull('Tomorrow at 10am send invoice to client', new Date().toISOString());
+

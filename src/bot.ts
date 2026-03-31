@@ -2,6 +2,8 @@ import { Bot } from "grammy";
 import { config } from "./config.ts";
 import { ownerOnly } from "./middleware/auth.ts";
 import { registerTaskCommands } from "./commands/tasks.ts";
+import { registerReminderCommands } from "./commands/reminders.ts";
+import { startScheduler } from "./scheduler.ts";
 
 export const bot = new Bot(config.telegramToken);
 
@@ -14,3 +16,5 @@ bot.on('message', (ctx, next) => {
 bot.command("ping", (ctx) => ctx.reply("pong"));
 
 registerTaskCommands(bot);
+registerReminderCommands(bot);
+startScheduler(bot);
