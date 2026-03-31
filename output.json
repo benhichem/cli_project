@@ -4,9 +4,9 @@
       "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
       "content-encoding": "gzip",
       "content-type": "application/json; charset=UTF-8",
-      "date": "Tue, 31 Mar 2026 15:12:43 GMT",
+      "date": "Tue, 31 Mar 2026 15:33:42 GMT",
       "server": "scaffolding on HTTPServer2",
-      "server-timing": "gfet4t7; dur=1219",
+      "server-timing": "gfet4t7; dur=5340",
       "transfer-encoding": "chunked",
       "vary": "Origin, X-Origin, Referer",
       "x-content-type-options": "nosniff",
@@ -20,27 +20,27 @@
       "content": {
         "parts": [
           {
-            "text": "{\"fireAt\":\"2026-04-01T10:00:00.000Z\",\"text\":\"i should go for a walk\"}"
+            "text": "```json\n{\n  \"fireAt\": \"2026-04-01T10:00:00.000Z\",\n  \"text\":"
           }
         ],
         "role": "model"
       },
-      "finishReason": "STOP",
+      "finishReason": "MAX_TOKENS",
       "index": 0
     }
   ],
   "modelVersion": "gemini-2.5-flash",
-  "responseId": "auTLacLQF9OAxs0PqIDY8QE",
+  "responseId": "UenLaZanHJ69vdIPzqDy0AM",
   "usageMetadata": {
-    "promptTokenCount": 175,
-    "candidatesTokenCount": 38,
-    "totalTokenCount": 346,
+    "promptTokenCount": 173,
+    "candidatesTokenCount": 41,
+    "totalTokenCount": 1193,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 175
+        "tokenCount": 173
       }
     ],
-    "thoughtsTokenCount": 133
+    "thoughtsTokenCount": 979
   }
 }

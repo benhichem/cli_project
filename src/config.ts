@@ -9,5 +9,5 @@ export const config = {
   ownerTelegramId: parseInt(requireEnv("OWNER_TELEGRAM_ID"), 10),
   port: parseInt(process.env["PORT"] ?? "3000", 10),
   dbPath: process.env["DB_PATH"] ?? "./data/bot.db",
-  gemini_api_key: requireEnv("GEMINI_API_KEY"),
+  nvidia_api_key: requireEnv("NVIDIA_API_KEY"),
 };
