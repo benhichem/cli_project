@@ -6,6 +6,7 @@ import { ownerOnly } from "./src/middleware/auth"
 import { registerTaskCommands } from "./src/commands/tasks"
 import { registerRewriteCommands } from "./src/commands/rewrite"
 import { registerReminderCommands } from "./src/commands/reminders"
+import { registerWalkCommand } from "./src/commands/walk"
 import { registerHelpCommand } from "./src/commands/help"
 import { registerErrorHandler } from "./src/middleware/errorHandler"
 
@@ -19,6 +20,7 @@ bot.use(ownerOnly())
 registerTaskCommands(bot)
 registerRewriteCommands(bot)
 registerReminderCommands(bot)
+registerWalkCommand(bot)
 
 // 4. Register help + unknown-command fallback — AFTER other commands
 registerHelpCommand(bot)
@@ -31,3 +33,11 @@ startServer()
 
 // 7. Start reminder scheduler
 startScheduler(bot)
+
+// 8. Keep-alive: ping own /health every 10 min to prevent Render free-tier spin-down
+const SERVICE_URL = process.env.SERVICE_URL
+if (SERVICE_URL) {
+  setInterval(() => {
+    fetch(`${SERVICE_URL}/health`).catch(() => {})
+  }, 10 * 60 * 1000)
+}
