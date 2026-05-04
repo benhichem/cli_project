@@ -45,7 +45,7 @@ export function registerReminderCommands(bot: Bot): void {
       )
     }
 
-    createReminder(result.text, result.fireAt)
+    await createReminder(result.text, result.fireAt)
     const formatted = formatFireAt(result.fireAt)
     return ctx.reply(`🕐 Got it. Reminding you <b>${formatted}</b>\n${escapeHtml(result.text)}`, { parse_mode: 'HTML' })
   })

@@ -4,7 +4,7 @@ import { config } from './config'
 import { escapeHtml } from './utils/html'
 
 async function fireReminders(bot: Bot): Promise<void> {
-  const due = getDueReminders()
+  const due = await getDueReminders()
   for (const reminder of due) {
     try {
       await bot.api.sendMessage(
@@ -15,7 +15,7 @@ async function fireReminders(bot: Bot): Promise<void> {
     } catch (err) {
       console.error(`Failed to send reminder ${reminder.id}:`, err)
     }
-    markReminderFired(reminder.id)
+    await markReminderFired(reminder.id)
   }
 }
 

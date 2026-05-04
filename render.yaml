@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: telegram-bot
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    dockerfilePath: ./Dockerfile
+
+    envVars:
+      - key: SUPABASE_URL
+        value: https://amwrtaoansulrrbbdhwo.supabase.co
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: OWNER_TELEGRAM_ID
+        sync: false
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: METEOSOURCE_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

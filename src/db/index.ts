@@ -1,11 +1,4 @@
-import { db } from './client'
-import { CREATE_TASKS, CREATE_REMINDERS } from './schema'
-
-export function initDb(): void {
-  db.run('PRAGMA journal_mode=WAL')
-  db.run(CREATE_TASKS)
-  db.run(CREATE_REMINDERS)
-}
+export function initDb(): void {}
 
 export { createTask, getTasks, completeTask } from './tasks'
 export { createReminder, getDueReminders, markReminderFired } from './reminders'

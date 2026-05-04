@@ -3,7 +3,7 @@ import { createTask, getTasks, completeTask } from '../db/index'
 import { escapeHtml } from '../utils/html'
 
 export function registerTaskCommands(bot: Bot): void {
-  bot.command('todo', (ctx) => {
+  bot.command('todo', async (ctx) => {
     const match = ctx.match.trim()
 
     if (match === 'add' || match.startsWith('add ')) {
@@ -11,12 +11,12 @@ export function registerTaskCommands(bot: Bot): void {
       if (!text) {
         return ctx.reply('<i>Please provide a task description.</i>', { parse_mode: 'HTML' })
       }
-      const task = createTask(text)
+      const task = await createTask(text)
       return ctx.reply(`✅ Task <b>#${task.id}</b> added\n${escapeHtml(task.text)}`, { parse_mode: 'HTML' })
     }
 
     if (match === 'list') {
-      const tasks = getTasks()
+      const tasks = await getTasks()
       if (tasks.length === 0) {
         return ctx.reply('<i>No open tasks.</i>', { parse_mode: 'HTML' })
       }
@@ -27,12 +27,12 @@ export function registerTaskCommands(bot: Bot): void {
     return ctx.reply('<i>Usage:</i> /todo add &lt;text&gt; or /todo list', { parse_mode: 'HTML' })
   })
 
-  bot.command('done', (ctx) => {
+  bot.command('done', async (ctx) => {
     const id = parseInt(ctx.match.trim(), 10)
     if (isNaN(id)) {
       return ctx.reply('<i>Please provide a task number.</i>', { parse_mode: 'HTML' })
     }
-    const ok = completeTask(id)
+    const ok = await completeTask(id)
     if (!ok) {
       return ctx.reply('<i>Task not found.</i>', { parse_mode: 'HTML' })
     }

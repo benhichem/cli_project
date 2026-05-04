@@ -1,35 +1,37 @@
-import { db } from './client'
+import { supabase } from './client.ts'
 
 export interface Reminder {
   id: number
   text: string
   fire_at: string
-  fired: number
+  fired: boolean
   created_at: string
 }
 
-export function createReminder(text: string, fireAt: string): Reminder {
-  const now = new Date().toISOString()
-  const stmt = db.prepare(
-    `INSERT INTO reminders (text, fire_at, fired, created_at) VALUES (?, ?, 0, ?)`
-  )
-  const result = stmt.run(text, fireAt, now)
-  return {
-    id: result.lastInsertRowid as number,
-    text,
-    fire_at: fireAt,
-    fired: 0,
-    created_at: now,
-  }
+export async function createReminder(text: string, fireAt: string): Promise<Reminder> {
+  const { data, error } = await supabase
+    .from('reminders')
+    .insert({ text, fire_at: fireAt, fired: false, created_at: new Date().toISOString() })
+    .select()
+    .single()
+  if (error) throw error
+  return data
 }
 
-export function getDueReminders(): Reminder[] {
-  const now = new Date().toISOString()
-  return db
-    .prepare(`SELECT * FROM reminders WHERE fired = 0 AND fire_at <= ?`)
-    .all(now) as Reminder[]
+export async function getDueReminders(): Promise<Reminder[]> {
+  const { data, error } = await supabase
+    .from('reminders')
+    .select('*')
+    .eq('fired', false)
+    .lte('fire_at', new Date().toISOString())
+  if (error) throw error
+  return data ?? []
 }
 
-export function markReminderFired(id: number): void {
-  db.prepare(`UPDATE reminders SET fired = 1 WHERE id = ?`).run(id)
+export async function markReminderFired(id: number): Promise<void> {
+  const { error } = await supabase
+    .from('reminders')
+    .update({ fired: true })
+    .eq('id', id)
+  if (error) throw error
 }

@@ -35,5 +35,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .claude
 CLAUDE.md
 features.md
+data/bot.db
 data/bot.db-shm
 data/bot.db-wal

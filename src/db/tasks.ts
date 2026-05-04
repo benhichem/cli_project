@@ -1,4 +1,4 @@
-import { db } from './client'
+import { supabase } from './client.ts'
 
 export interface Task {
   id: number
@@ -8,29 +8,31 @@ export interface Task {
   completed_at: string | null
 }
 
-export function createTask(text: string): Task {
-  const now = new Date().toISOString()
-  const stmt = db.prepare(
-    `INSERT INTO tasks (text, status, created_at, completed_at) VALUES (?, 'open', ?, NULL)`
-  )
-  const result = stmt.run(text, now)
-  return {
-    id: result.lastInsertRowid as number,
-    text,
-    status: 'open',
-    created_at: now,
-    completed_at: null,
-  }
+export async function createTask(text: string): Promise<Task> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .insert({ text, status: 'open', created_at: new Date().toISOString(), completed_at: null })
+    .select()
+    .single()
+  if (error) throw error
+  return data
 }
 
-export function getTasks(): Task[] {
-  return db.prepare(`SELECT * FROM tasks WHERE status = 'open'`).all() as Task[]
+export async function getTasks(): Promise<Task[]> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('*')
+    .eq('status', 'open')
+  if (error) throw error
+  return data ?? []
 }
 
-export function completeTask(id: number): boolean {
-  const now = new Date().toISOString()
-  const result = db
-    .prepare(`UPDATE tasks SET status = 'done', completed_at = ? WHERE id = ?`)
-    .run(now, id)
-  return result.changes > 0
+export async function completeTask(id: number): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .update({ status: 'done', completed_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+  if (error) throw error
+  return (data?.length ?? 0) > 0
 }
